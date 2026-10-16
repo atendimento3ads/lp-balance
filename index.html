@@ -146,6 +146,7 @@
   .field.full{grid-column:1/-1}
   .field label,.fset legend{font-size:14px;font-weight:600;color:var(--t1)}
   .field input{font:inherit;font-size:16px;padding:15px 18px;border-radius:14px;border:1.5px solid var(--border);background:var(--surface);color:var(--t1);transition:border-color .25s,background .25s,box-shadow .25s}
+  .field input::placeholder{color:#a89d95;opacity:1}
   .field input:focus{outline:0;border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(115,43,0,.1)}
   .fset{border:0;grid-column:1/-1;margin-top:6px}
   .fset legend{margin-bottom:12px;font-size:15px}
@@ -369,11 +370,11 @@
     </div>
     <form class="form-card reveal" id="lead-form" novalidate>
       <div class="fgrid">
-        <div class="field full"><label for="f-nome">Nome</label><input id="f-nome" name="nome" type="text" autocomplete="name" required></div>
-        <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" type="text" autocomplete="organization" required></div>
-        <div class="field"><label for="f-cargo">Cargo</label><input id="f-cargo" name="cargo" type="text" autocomplete="organization-title" required></div>
+        <div class="field full"><label for="f-nome">Nome</label><input id="f-nome" name="nome" type="text" autocomplete="name" placeholder="Ex.: Maria Souza" required></div>
+        <div class="field"><label for="f-empresa">Empresa</label><input id="f-empresa" name="empresa" type="text" autocomplete="organization" placeholder="Ex.: Souza Comércio Ltda." required></div>
+        <div class="field"><label for="f-cargo">Cargo</label><input id="f-cargo" name="cargo" type="text" autocomplete="organization-title" placeholder="Ex.: Sócia-diretora" required></div>
         <div class="field"><label for="f-tel">Telefone / WhatsApp</label><input id="f-tel" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(62) 90000-0000" required></div>
-        <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-email">E-mail</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="Ex.: maria@empresa.com.br" required></div>
         <fieldset class="fset">
           <legend>Qual é o principal desafio financeiro da empresa hoje?</legend>
           <div class="opts">
