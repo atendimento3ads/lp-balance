@@ -191,8 +191,12 @@
     .wrap{padding:0 18px}
     section{padding:72px 0}
     .hero{--s:.55;padding:8px 10px 0}
-    .hero-panel{border-radius:28px;padding:118px 0 calc(160px*var(--s) + 32px);min-height:0;background-position:72% center}
-    .hero-panel::before{background:linear-gradient(180deg,rgba(42,22,8,.92) 0%,rgba(42,22,8,.78) 60%,rgba(42,22,8,.45) 100%)}
+    .hero-panel{border-radius:28px;padding:clamp(340px,96vw,420px) 0 calc(160px*var(--s) + 28px);min-height:0;align-items:flex-end;background:#2a1608 url(images/hero-fundo.webp) 77% 0/auto clamp(520px,148vw,640px) no-repeat}
+    .hero-panel::before{background:linear-gradient(180deg,rgba(42,22,8,0) 0%,rgba(42,22,8,0) 38%,rgba(42,22,8,.55) 55%,rgba(42,22,8,.92) 72%,#2a1608 100%)}
+    .hero .wrap>div{margin:0 auto;text-align:center}
+    .hero .lead{margin:18px auto 0}
+    .hero .kicker{margin-bottom:14px}
+    .hero .cta-row{margin-top:28px}
     .hdr .logo{height:36px}
     .hdr .btn{padding:11px 16px;font-size:13px}
     .btn{width:100%;justify-content:center}
