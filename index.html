@@ -89,10 +89,10 @@
   .hero h1{font-size:clamp(40px,4.2vw,60px);color:#fff;letter-spacing:-.053em;line-height:.973}
   .hero h1 b{font-weight:600}
   .hero .lead{margin-top:30px;max-width:515px;font-size:clamp(17px,1.4vw,20px);line-height:1.6}
-  .hero-notch{z-index:2;position:absolute;left:0;right:0;bottom:0;display:flex;height:calc(127px*var(--s));pointer-events:none}
-  .hero-notch svg{flex:0 0 auto;width:calc(170px*var(--s));height:100%;display:block}
+  .hero-notch{z-index:2;position:absolute;left:0;right:0;bottom:-1px;display:flex;height:calc(127px*var(--s) + 1px);pointer-events:none}
+  .hero-notch svg{position:relative;z-index:1;flex:0 0 auto;width:calc(170px*var(--s));height:100%;display:block;shape-rendering:geometricPrecision}
   .hero-notch svg.r{transform:scaleX(-1)}
-  .hero-notch i{flex:1;background:linear-gradient(transparent calc(52.64px*var(--s)),#fff 0)}
+  .hero-notch i{flex:1;margin:0 -3px;background:linear-gradient(transparent 41.31%,#fff 0)}
 
   /* S02 — dores */
   .pains{display:grid;grid-template-columns:repeat(2,1fr);gap:34px 30px;margin-top:64px}
@@ -190,7 +190,7 @@
   @media (max-width:640px){
     .wrap{padding:0 18px}
     section{padding:72px 0}
-    .hero{--s:.55;padding:8px 10px 0}
+    .hero{--s:.5;padding:8px 10px 0}
     .hero-panel{--h:clamp(580px,172vw,720px);border-radius:28px;padding:calc(var(--h)*.6) 0 calc(160px*var(--s) + 28px);min-height:0;align-items:flex-end;background:linear-gradient(180deg,rgba(42,22,8,0) 0%,rgba(42,22,8,0) 42%,rgba(42,22,8,.6) 60%,rgba(42,22,8,.94) 80%,#2a1608 97%) 0 0/100% var(--h) no-repeat,url(images/hero-fundo.webp) 76% 0/auto var(--h) no-repeat,#2a1608}
     .hero-panel::before{display:none}
     .hero .wrap>div{margin:0 auto;text-align:center}
