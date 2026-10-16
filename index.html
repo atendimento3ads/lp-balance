@@ -82,14 +82,14 @@
 
   /* HERO — painel arredondado com moldura e recorte inferior (Figma "Sem título") */
   .hero{--s:1;padding:12px 23px 0;background:#2a1608;position:relative}
-  .hero-panel{background:#40220c;border-radius:39px;padding:196px 0 calc(160px*var(--s) + 40px);min-height:min(983px,100svh);display:flex;align-items:center}
-  .hero .wrap{width:100%;display:grid;grid-template-columns:minmax(0,607px) minmax(0,542px);justify-content:space-between;gap:48px;align-items:center}
+  .hero-panel{background:#40220c url(images/hero-fundo.webp) right center/cover no-repeat;position:relative;isolation:isolate;overflow:hidden;border-radius:39px;padding:196px 0 calc(160px*var(--s) + 40px);min-height:min(983px,100svh);display:flex;align-items:center}
+  .hero-panel::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(42,22,8,.88) 0%,rgba(42,22,8,.6) 38%,rgba(42,22,8,0) 62%)}
+  .hero .wrap{width:100%}
+  .hero .wrap>div{max-width:607px}
   .hero h1{font-size:clamp(40px,4.2vw,60px);color:#fff;letter-spacing:-.053em;line-height:.973}
   .hero h1 b{font-weight:600}
   .hero .lead{margin-top:30px;max-width:515px;font-size:clamp(17px,1.4vw,20px);line-height:1.6}
-  .hero-media{width:100%;max-width:542px;justify-self:end}
-  .hero-media img{width:100%;height:auto}
-  .hero-notch{position:absolute;left:0;right:0;bottom:0;display:flex;height:calc(127px*var(--s));pointer-events:none}
+  .hero-notch{z-index:2;position:absolute;left:0;right:0;bottom:0;display:flex;height:calc(127px*var(--s));pointer-events:none}
   .hero-notch svg{flex:0 0 auto;width:calc(170px*var(--s));height:100%;display:block}
   .hero-notch svg.r{transform:scaleX(-1)}
   .hero-notch i{flex:1;background:linear-gradient(transparent calc(52.64px*var(--s)),#fff 0)}
@@ -176,7 +176,8 @@
     .hero .wrap,.s03 .wrap,.s05 .wrap,.s06 .wrap,.s04 .head{grid-template-columns:1fr;gap:56px}
     .s03 .sticky,.s06 .side{position:static}
     .hero-panel{padding-top:150px}
-    .hero-media{max-width:440px;justify-self:start}
+    .hero-panel{background-position:68% center}
+    .hero-panel::before{background:linear-gradient(90deg,rgba(42,22,8,.9) 0%,rgba(42,22,8,.55) 60%,rgba(42,22,8,.15) 100%)}
     .ftr .grid{grid-template-columns:1fr 1fr}
   }
   @media (max-width:900px){
@@ -190,7 +191,8 @@
     .wrap{padding:0 18px}
     section{padding:72px 0}
     .hero{--s:.55;padding:8px 10px 0}
-    .hero-panel{border-radius:28px;padding:118px 0 calc(160px*var(--s) + 32px);min-height:0}
+    .hero-panel{border-radius:28px;padding:118px 0 calc(160px*var(--s) + 32px);min-height:0;background-position:72% center}
+    .hero-panel::before{background:linear-gradient(180deg,rgba(42,22,8,.92) 0%,rgba(42,22,8,.78) 60%,rgba(42,22,8,.45) 100%)}
     .hdr .logo{height:36px}
     .hdr .btn{padding:11px 16px;font-size:13px}
     .btn{width:100%;justify-content:center}
@@ -230,9 +232,6 @@
         <h1>Tenha clareza sobre <b>lucro, caixa e margem</b> antes de decidir</h1>
         <p class="lead">A Balance organiza processos financeiros, indicadores, custos, fluxo de caixa, rentabilidade e planejamento para que sócios e gestores entendam melhor o resultado da empresa e tenham números mais confiáveis para decidir.</p>
         <div class="cta-row"><a class="btn" href="#contato">Fale com um consultor <span class="arr">→</span></a></div>
-      </div>
-      <div class="hero-media reveal">
-        <img src="images/hero-pessoa.webp" width="542" height="656" alt="Gestora sorrindo segurando um tablet">
       </div>
     </div>
   </div>
