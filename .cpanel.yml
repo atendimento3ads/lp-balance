@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home1/balanc29/gestao.balanceconsultoria.com.br/
+    - /bin/cp index.html $DEPLOYPATH
+    - /bin/cp -R images $DEPLOYPATH
