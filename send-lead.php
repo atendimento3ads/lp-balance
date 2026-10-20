@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 const LEAD_DESTINATION = 'thyago@balanceconsultoria.com.br';
+const MAIL_SENDER = 'naoresponder@balanceconsultoria.com.br';
 const ALLOWED_HOST = 'gestao.balanceconsultoria.com.br';
 const CONSENT_NOTICE_VERSION = '1.0';
 
@@ -102,8 +103,11 @@ $body = implode("\r\n", [
 ]);
 
 $headers = [
-    'From: Balance Consultoria <no-reply@balanceconsultoria.com.br>',
+    'From: Balance Consultoria <' . MAIL_SENDER . '>',
+    'Sender: ' . MAIL_SENDER,
     'Reply-To: ' . $safeName . ' <' . $email . '>',
+    'Auto-Submitted: auto-generated',
+    'X-Auto-Response-Suppress: All',
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
     'Content-Transfer-Encoding: 8bit',
@@ -113,7 +117,8 @@ $sent = mail(
     LEAD_DESTINATION,
     '=?UTF-8?B?' . base64_encode($subject) . '?=',
     $body,
-    implode("\r\n", $headers)
+    implode("\r\n", $headers),
+    '-f' . MAIL_SENDER
 );
 
 if (!$sent) {
