@@ -5,6 +5,7 @@ const LEAD_DESTINATION = 'thyago@balanceconsultoria.com.br';
 const MAIL_SENDER = 'naoresponder@balanceconsultoria.com.br';
 const ALLOWED_HOST = 'gestao.balanceconsultoria.com.br';
 const CONSENT_NOTICE_VERSION = '1.0';
+const LEADS_STORAGE_DIRECTORY = '/home1/balanc29/balance-leads-private';
 
 header('X-Content-Type-Options: nosniff');
 header('Cache-Control: no-store, max-age=0');
@@ -34,6 +35,69 @@ function cleanText(string $value, int $maxLength): string
     return function_exists('mb_substr')
         ? mb_substr($value, 0, $maxLength, 'UTF-8')
         : substr($value, 0, $maxLength);
+}
+
+function csvSafeValue(string $value): string
+{
+    return preg_match('/^[\s\x00-\x1F]*[=+\-@]/u', $value) === 1 ? "'" . $value : $value;
+}
+
+function saveLead(array $lead): bool
+{
+    $directory = LEADS_STORAGE_DIRECTORY;
+    if (is_link($directory)) {
+        return false;
+    }
+    if (!is_dir($directory) && !@mkdir($directory, 0700, true) && !is_dir($directory)) {
+        return false;
+    }
+    @chmod($directory, 0700);
+
+    $path = $directory . '/leads.csv';
+    if (is_link($path)) {
+        return false;
+    }
+
+    $previousUmask = umask(0077);
+    $file = @fopen($path, 'c+');
+    umask($previousUmask);
+    if ($file === false) {
+        return false;
+    }
+
+    try {
+        if (!flock($file, LOCK_EX)) {
+            return false;
+        }
+
+        @chmod($path, 0600);
+        if (fseek($file, 0, SEEK_END) !== 0) {
+            return false;
+        }
+
+        if (ftell($file) === 0) {
+            if (fwrite($file, "\xEF\xBB\xBF") === false
+                || fputcsv($file, [
+                    'ID', 'Recebido em', 'Nome', 'Empresa', 'Cargo', 'Telefone / WhatsApp',
+                    'E-mail', 'Principal desafio', 'Autorização para contato', 'Versão do aviso',
+                ], ';', '"', '\\') === false) {
+                return false;
+            }
+        }
+
+        $row = array_map('csvSafeValue', $lead);
+        if (fputcsv($file, $row, ';', '"', '\\') === false || !fflush($file)) {
+            return false;
+        }
+        if (function_exists('fsync') && !fsync($file)) {
+            return false;
+        }
+
+        return true;
+    } finally {
+        flock($file, LOCK_UN);
+        fclose($file);
+    }
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
@@ -85,6 +149,7 @@ if ($name === '' || $company === '' || $role === '' || $email === false
 }
 
 $submittedAt = (new DateTimeImmutable('now', new DateTimeZone('America/Sao_Paulo')))->format('d/m/Y H:i:s T');
+$submissionId = bin2hex(random_bytes(8));
 $subject = 'Novo contato — Governança Financeira';
 $safeName = preg_replace('/[\r\n]+/', ' ', $name) ?? 'Contato do site';
 $body = implode("\r\n", [
@@ -100,6 +165,20 @@ $body = implode("\r\n", [
     'Autorização para contato: sim',
     'Versão técnica do aviso: ' . CONSENT_NOTICE_VERSION,
     'Recebido em: ' . $submittedAt,
+    'Protocolo: ' . $submissionId,
+]);
+
+$stored = saveLead([
+    $submissionId,
+    $submittedAt,
+    $name,
+    $company,
+    $role,
+    $phone,
+    (string) $email,
+    $challenge,
+    'sim',
+    CONSENT_NOTICE_VERSION,
 ]);
 
 $headers = [
@@ -121,8 +200,19 @@ $sent = mail(
     '-f' . MAIL_SENDER
 );
 
-if (!$sent) {
-    respond(500, false, 'Não foi possível enviar agora.');
+if (!$stored && !$sent) {
+    respond(500, false, 'Não foi possível registrar nem enviar sua solicitação. Tente novamente.');
 }
 
-respond(200, true, 'Mensagem enviada.');
+if (!$stored) {
+    error_log('[lead-form] CSV backup failed for submission ' . $submissionId);
+}
+if (!$sent) {
+    error_log('[lead-form] Email delivery failed for submission ' . $submissionId);
+}
+
+if ($stored) {
+    respond(200, true, 'Solicitação registrada com sucesso. A equipe da Balance entrará em contato.');
+}
+
+respond(200, true, 'Solicitação enviada à equipe da Balance, mas o backup local não pôde ser gravado.');

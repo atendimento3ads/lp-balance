@@ -182,7 +182,7 @@
       if (!response.ok || result.success !== true) throw new Error("submission_failed");
 
       form.reset();
-      setFormStatus("Mensagem enviada. A equipe da Balance entrará em contato.", "success");
+      setFormStatus(result.message || "Solicitação recebida. A equipe da Balance entrará em contato.", "success");
       pushEvent("generate_lead", {
         lead_source: "lp_governanca_financeira",
         form_id: "lead-form"

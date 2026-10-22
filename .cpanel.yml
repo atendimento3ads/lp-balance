@@ -2,5 +2,8 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home1/balanc29/gestao.balanceconsultoria.com.br/
+    - /bin/mkdir -p /home1/balanc29/balance-leads-private
+    - /bin/chmod 700 /home1/balanc29/balance-leads-private
+    - /bin/cp private-data/.htaccess /home1/balanc29/balance-leads-private/.htaccess
     - /bin/cp index.html send-lead.php robots.txt .htaccess $DEPLOYPATH
     - /bin/cp -R assets images $DEPLOYPATH
